@@ -1,0 +1,52 @@
+/**
+ * GLM 4.5 Helper Extension Styles
+ */
+
+.glm-helper-settings .inline-drawer-header {
+    font-weight: bold;
+    color: var(--SmartThemeBodyColor);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.glm-helper-settings .inline-drawer-content {
+    padding: 10px 0;
+    border-top: 1px solid var(--SmartThemeBorderColor);
+    margin-top: 5px;
+}
+
+.glm-helper-settings .checkbox_label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: var(--SmartThemeBodyColor);
+}
+
+.glm-helper-settings .checkbox_label input[type="checkbox"] {
+    margin: 0;
+}
+
+.glm-helper-settings .notes {
+    display: block;
+    color: var(--SmartThemeQuoteColor);
+    font-style: italic;
+    line-height: 1.4;
+    margin-top: 5px;
+}
+
+/* Hover effects */
+.glm-helper-settings .inline-drawer-header:hover {
+    background-color: var(--black50a);
+    border-radius: 3px;
+}
+
+.glm-helper-settings .checkbox_label:hover {
+    background-color: var(--black30a);
+    border-radius: 3px;
+    padding: 2px 5px;
+    margin: -2px -5px 8px -5px;
+}
