@@ -32,11 +32,8 @@ import { eventSource, event_types, main_api, stopGeneration } from '../../../../
         
         console.log(`[GLM 4.5 Helper] Processing ${messages.length} messages`);
         
-        // Create a copy to avoid modifying the original array
-        const modifiedMessages = JSON.parse(JSON.stringify(messages));
-        
         // Find the last message
-        const lastMessage = modifiedMessages[modifiedMessages.length - 1];
+        const lastMessage = messages[messages.length - 1];
         console.log('[GLM 4.5 Helper] Last message:', lastMessage);
         
         // Check if the last message has 'system' role and change it to 'user'
@@ -48,24 +45,34 @@ import { eventSource, event_types, main_api, stopGeneration } from '../../../../
         } else {
             console.log(`[GLM 4.5 Helper] Last message role is '${lastMessage?.role}' - no modification needed`);
         }
-        
-        console.log('[GLM 4.5 Helper] Returning modified messages array');
-        return modifiedMessages;
     }
     
     /**
      * Hook into the Chat Completion API request
      */
     function hookChatCompletionAPI() {
-        // Hook into the event system to intercept API requests
-        eventSource.on(event_types.CHAT_COMPLETION_PROMPT_READY, (data) => {
+        // Use makeFirst to ensure our handler runs before other processing
+        eventSource.makeFirst(event_types.CHAT_COMPLETION_PROMPT_READY, async (data) => {
             console.log('[GLM 4.5 Helper] CHAT_COMPLETION_PROMPT_READY event received:', data);
-            if (!isEnabled) return;
+            
+            if (!isEnabled) {
+                console.log('[GLM 4.5 Helper] Extension disabled, skipping');
+                return;
+            }
+            
+            // Skip dry runs (test prompts)
+            if (data.dryRun) {
+                console.log('[GLM 4.5 Helper] Skipping dry run prompt');
+                return;
+            }
             
             try {
                 if (data && data.chat) {
                     console.log('[GLM 4.5 Helper] Intercepting chat completion request');
-                    data.chat = modifyLastSystemMessage(data.chat);
+                    modifyLastSystemMessage(data.chat);
+                    console.log('[GLM 4.5 Helper] Modified chat data:', data.chat);
+                } else {
+                    console.log('[GLM 4.5 Helper] No chat data found in event:', data);
                 }
             } catch (error) {
                 console.error('[GLM 4.5 Helper] Error modifying messages:', error);

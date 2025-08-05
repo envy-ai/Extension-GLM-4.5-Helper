@@ -4,12 +4,12 @@
     "requires": [],
     "optional": [
     ],
-    "loading_order": 4,
+    "loading_order": 6,
     "js": "index.js",
     "css": "style.css",
     "author": "envy-ai",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "homePage": "https://github.com/envy-ai/SillyTavern-Extension-GLM-4.5-Helper",
     "description": "Sets any 'system' message at the end of the conversation to 'user' so that GLM 4.5 pays attention to it.",
-    "manifest_version": 12
+    "manifest_version": 15
 }
